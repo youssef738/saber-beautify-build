@@ -1,0 +1,57 @@
+name: Build Saber Beautify APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out this repository (patch file)
+        uses: actions/checkout@v4
+
+      - name: Check out the pinned Saber source
+        uses: actions/checkout@v4
+        with:
+          repository: saber-notes/saber
+          ref: c85af406e6d954402cc7c6d718a8f240f54408b2
+          path: saber-source
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.0'
+          channel: stable
+          cache: true
+
+      - name: Apply the feature patch
+        run: |
+          git -C saber-source apply --check saber-beautify-feature.patch
+          git -C saber-source apply saber-beautify-feature.patch
+
+      - name: Resolve dependencies
+        working-directory: saber-source
+        run: flutter pub get
+
+      - name: Build release APK
+        working-directory: saber-source
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: saber-beautify-apk
+          path: saber-source/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 7
+          
