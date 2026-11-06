@@ -1879,7 +1879,7 @@ index a83b2b1..c00c649 100644
              },
            );
 diff --git a/lib/pages/editor/editor.dart b/lib/pages/editor/editor.dart
-index 0331164..ef887d1 100644
+index 0331164..02268f3 100644
 --- a/lib/pages/editor/editor.dart
 +++ b/lib/pages/editor/editor.dart
 @@ -1,6 +1,7 @@
@@ -1898,7 +1898,7 @@ index 0331164..ef887d1 100644
  import 'package:saber/components/toolbar/toolbar.dart';
  import 'package:saber/data/editor/editor_core_info.dart';
  import 'package:saber/data/editor/editor_exporter.dart';
-@@ -842,6 +844,95 @@ class EditorState extends State<Editor> {
+@@ -842,6 +844,96 @@ class EditorState extends State<Editor> {
      if (mounted) setState(() {});
    }
  
@@ -1944,6 +1944,7 @@ index 0331164..ef887d1 100644
 +        targetSize: bounds.size,
 +      );
 +      final image = PngEditorImage(
++        assetCache: coreInfo.assetCache,
 +        id: coreInfo.nextImageId++,
 +        extension: '.png',
 +        imageProvider: MemoryImage(bytes),
@@ -1994,7 +1995,7 @@ index 0331164..ef887d1 100644
    void onMoveImage(EditorImage image, Rect offset) {
      history.recordChange(
        HistoricMove(
-@@ -1564,6 +1655,9 @@ class EditorState extends State<Editor> {
+@@ -1564,6 +1656,9 @@ class EditorState extends State<Editor> {
                autosaveAfterDelay();
              });
            },
