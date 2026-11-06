@@ -34,9 +34,19 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Free runner disk space for Android and Rust builds
+        run: |
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/lib/android/sdk/system-images
+          sudo rm -rf /usr/local/lib/android/sdk/emulator
+          df -h
+
       - name: Apply the feature patch
         run: git -C saber-source apply --check "$GITHUB_WORKSPACE/saber-beautify-feature.patch" && git -C saber-source apply "$GITHUB_WORKSPACE/saber-beautify-feature.patch"
-              
+
       - name: Resolve dependencies
         working-directory: saber-source
         run: flutter pub get
