@@ -36,8 +36,8 @@ jobs:
 
       - name: Apply the feature patch
         run: |
-          git -C saber-source apply --check saber-beautify-feature.patch
-          git -C saber-source apply saber-beautify-feature.patch
+        git -C saber-source apply --check "$GITHUB_WORKSPACE/saber-beautify-feature.patch"
+        git -C saber-source apply "$GITHUB_WORKSPACE/saber-beautify-feature.patch"
 
       - name: Resolve dependencies
         working-directory: saber-source
